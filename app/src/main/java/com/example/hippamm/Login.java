@@ -30,7 +30,7 @@ public class Login extends AppCompatActivity {
     String username, password;
 
     int success;
-    private String url = Server.URL + "login.php";
+    private String url = Server.URL + "login";
     private static final String TAG = Login.class.getSimpleName();
 
     private static final String TAG_SUCCESS = "success";
@@ -79,14 +79,9 @@ public class Login extends AppCompatActivity {
                     success = jObj.getInt(TAG_SUCCESS);
 
                     if (success == 1) {
-                        String username = jObj.getString(TAG_USERNAME);
-                        String id = jObj.getString(TAG_ID);
                         Log.e("Successfully Login!", jObj.toString());
                         Toast.makeText(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
-
-                        Intent intent = new Intent(Login.this, MainActivity.class);
-                        intent.putExtra(TAG_ID, id);
-                        intent.putExtra(TAG_USERNAME, username);
+                        Intent intent = new Intent(Login.this, Home.class);
                         finish();
                         startActivity(intent);
                     } else {
