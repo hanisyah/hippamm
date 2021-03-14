@@ -3,8 +3,13 @@ package com.example.hippamm;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import com.google.zxing.Result;
 
@@ -36,14 +41,20 @@ public class Scan extends AppCompatActivity implements ZXingScannerView.ResultHa
 
     @Override
     public void handleResult(Result rawResult) {
-        Log.v("TAG", rawResult.getText()); // Prints scan results
+        /*Log.v("TAG", rawResult.getText()); // Prints scan results
         Log.v("TAG", rawResult.getBarcodeFormat().toString());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Scan Result");
         builder.setMessage(rawResult.getText());
         AlertDialog alert1 = builder.create();
         alert1.show();
+         */
 
+        Intent intent = new Intent(getBaseContext(), TampilPelanggan.class);
+        intent.putExtra("idPelanggan", rawResult.getText());
+        startActivity(intent);
         mScannerView.resumeCameraPreview(this);
+        finish();
     }
+
 }
