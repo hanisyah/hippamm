@@ -2,6 +2,6 @@
 <network-security-config>
     <base-config cleartextTrafficPermitted="true"/>
     <domain-config cleartextTrafficPermitted="true">
-        <domain includeSubdomains="true">http://192.168.1.45:8000/api/</domain>
+        <domain includeSubdomains="true">http://192.168.1.75:8000/api/</domain>
     </domain-config>
 </network-security-config>

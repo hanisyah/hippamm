@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -19,21 +20,21 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class TampilPelanggan extends AppCompatActivity {
 
     private String url = Server.URL + "pelanggan";
     private static final String TAG = TampilPelanggan.class.getSimpleName();
-    int success;
-    private static final String TAG_SUCCESS = "success";
-    private static final String TAG_MESSAGE = "message";
-    public final static String TAG_ID = "id";
     String tag_json_obj = "json_obj_req";
 
     adapterPelanggan adapterPelanggan;
     String idPelanggan;
+    List<dataPelanggan> itemList = new ArrayList<dataPelanggan>();
+    TextView namaPelanggan, alamat, noHP, tanggalPasang, kodeMeter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,13 @@ public class TampilPelanggan extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         idPelanggan = extras.getString("idPelanggan");
 
+        adapterPelanggan = new adapterPelanggan(TampilPelanggan.this, itemList);
+        namaPelanggan = (TextView) findViewById(R.id.txtNamaPelanggan);
+        alamat = (TextView) findViewById(R.id.txtAlamat);
+        noHP = (TextView) findViewById(R.id.txtNoHP);
+        tanggalPasang = (TextView) findViewById(R.id.txtTanggalPasang);
+        kodeMeter = (TextView) findViewById(R.id.txtKodeMeter);
+
         checkPelanggan();
     }
 
@@ -51,28 +59,18 @@ public class TampilPelanggan extends AppCompatActivity {
 
             @Override
             public void onResponse(String response) {
-                //Log.d(TAG, "Response: " + response.toString());
+                Log.d(TAG, "Response: " + response.toString());
                 try {
-                    JSONObject jObj = new JSONObject(response);
-                    JSONObject myResponse = jObj.getJSONObject("data");
-                    //JSONArray tsmresponse = (JSONArray) myResponse.get("listTsm");
-                    //JSONArray resp = myResponse.getJSONArray("0");
-                    JSONObject obj = myResponse.getJSONObject("0");
-                    success = jObj.getInt(TAG_SUCCESS);
-                    //Log.e("CEKKK", "Response: " + resp.toString());
-                    if (success == 1) {
-                        dataPelanggan item = new dataPelanggan();
-                        item.setNamaPelanggan(obj.getString("namaPelanggan"));
-                        item.setAlamat(obj.getString("alamat"));
-                        item.setNoHP(obj.getString("noHP"));
-                        item.setTanggalPasang(obj.getString("tanggalPasang"));
-                        item.setKodeMeter(obj.getString("kodeMeter"));
+                    JSONArray jObj = new JSONArray(response);
+                    JSONObject obj = jObj.getJSONObject(0);
 
-                    } else {
+                    namaPelanggan.setText(obj.getString("namaPelanggan"));
+                    alamat.setText(obj.getString("alamat"));
+                    noHP.setText(obj.getString("noHP"));
+                    tanggalPasang.setText(obj.getString("tanggalPasang"));
+                    kodeMeter.setText(obj.getString("kodeMeter"));
 
-                    }
                 } catch (JSONException e) {
-                    // JSON error
                     e.printStackTrace();
                 }
 
@@ -87,9 +85,7 @@ public class TampilPelanggan extends AppCompatActivity {
 
             @Override
             protected Map<String, String> getParams() {
-                // Posting parameters ke post url
                 Map<String, String> params = new HashMap<String, String>();
-                // jika id kosong maka simpan, jika id ada nilainya maka update
                 params.put("idPelanggan", idPelanggan);
 
                 return params;

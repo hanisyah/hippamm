@@ -44,13 +44,10 @@ public class adapterPelanggan extends BaseAdapter {
             inflater = (LayoutInflater) activity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        /*if (convertView == null)
-            convertView = inflater.inflate(R.layout.list_row, null);*/
-
         //TextView idPelanggan = (TextView) convertView.findViewById(R.id.id);
         TextView namaPelanggan = (TextView) convertView.findViewById(R.id.txtNamaPelanggan);
         TextView alamat = (TextView) convertView.findViewById(R.id.txtAlamat);
-        TextView noHP = (TextView) convertView.findViewById(R.id.txtAlamat);
+        TextView noHP = (TextView) convertView.findViewById(R.id.txtNoHP);
         TextView tanggalPasang = (TextView) convertView.findViewById(R.id.txtTanggalPasang);
         TextView kodeMeter = (TextView) convertView.findViewById(R.id.txtKodeMeter);
 
