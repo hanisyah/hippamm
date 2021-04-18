@@ -50,6 +50,7 @@ public class adapterPelanggan extends BaseAdapter {
         TextView noHP = (TextView) convertView.findViewById(R.id.txtNoHP);
         TextView tanggalPasang = (TextView) convertView.findViewById(R.id.txtTanggalPasang);
         TextView kodeMeter = (TextView) convertView.findViewById(R.id.txtKodeMeter);
+        TextView golongan = (TextView) convertView.findViewById(R.id.txtGolongan);
 
         dataPelanggan dataPelanggan = items.get(position);
 
@@ -59,6 +60,7 @@ public class adapterPelanggan extends BaseAdapter {
         noHP.setText(dataPelanggan.getNoHP());
         tanggalPasang.setText(dataPelanggan.getTanggalPasang());
         kodeMeter.setText(dataPelanggan.getKodeMeter());
+        golongan.setText(dataPelanggan.getNamaGolongan());
 
         return convertView;
     }

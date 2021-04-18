@@ -2,18 +2,20 @@ package com.example.hippamm.mysql;
 
 public class dataPelanggan {
     private int idPelanggan;
-    private String namaPelanggan, alamat, noHP, tanggalPasang, kodeMeter;
+    private String namaPelanggan, alamat, noHP, tanggalPasang, kodeMeter, idGolongan, namaGolongan;
 
     public dataPelanggan() {
     }
 
-    public dataPelanggan(int idPelanggan, String namaPelanggan, String alamat, String noHP, String tanggalPasang, String kodeMeter) {
+    public dataPelanggan(int idPelanggan, String namaPelanggan, String alamat, String noHP, String tanggalPasang, String kodeMeter, String idGolongan, String namaGolongan) {
         this.idPelanggan = idPelanggan;
         this.namaPelanggan = namaPelanggan;
         this.alamat = alamat;
         this.noHP = noHP;
         this.tanggalPasang = tanggalPasang;
         this.kodeMeter = kodeMeter;
+        this.idGolongan = idGolongan;
+        this.namaGolongan = namaGolongan;
     }
 
     public int getIdPelanggan() {
@@ -62,5 +64,21 @@ public class dataPelanggan {
 
     public void setKodeMeter(String kodeMeter) {
         this.kodeMeter = kodeMeter;
+    }
+
+    public String getIdGolongan() {
+        return idGolongan;
+    }
+
+    public void setIdGolongan(String idGolongan) {
+        this.idGolongan = idGolongan;
+    }
+
+    public String getNamaGolongan() {
+        return namaGolongan;
+    }
+
+    public void setNamaGolongan(String namaGolongan) {
+        this.namaGolongan = namaGolongan;
     }
 }

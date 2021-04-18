@@ -2,8 +2,12 @@ package com.example.hippamm;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +38,7 @@ public class TampilPelanggan extends AppCompatActivity {
     adapterPelanggan adapterPelanggan;
     String idPelanggan;
     List<dataPelanggan> itemList = new ArrayList<dataPelanggan>();
-    TextView namaPelanggan, alamat, noHP, tanggalPasang, kodeMeter;
+    TextView namaPelanggan, alamat, noHP, tanggalPasang, kodeMeter, golongan;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +54,20 @@ public class TampilPelanggan extends AppCompatActivity {
         noHP = (TextView) findViewById(R.id.txtNoHP);
         tanggalPasang = (TextView) findViewById(R.id.txtTanggalPasang);
         kodeMeter = (TextView) findViewById(R.id.txtKodeMeter);
+        golongan = (TextView) findViewById(R.id.txtGolongan);
 
         checkPelanggan();
+
+        Button buttonInput = findViewById(R.id.btnInput);
+
+        buttonInput.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), Input.class);
+                intent.putExtra("idPelanggan", idPelanggan);
+                startActivity(intent);
+            }
+        });
     }
 
     private void checkPelanggan() {
@@ -69,7 +85,8 @@ public class TampilPelanggan extends AppCompatActivity {
                     noHP.setText(obj.getString("noHP"));
                     tanggalPasang.setText(obj.getString("tanggalPasang"));
                     kodeMeter.setText(obj.getString("kodeMeter"));
-
+                    golongan.setText(obj.getString("namaGolongan"));
+                    new Intent().putExtra("idGolongan", obj.getString("golongan_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
