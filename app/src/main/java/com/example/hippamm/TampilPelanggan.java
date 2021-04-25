@@ -39,6 +39,8 @@ public class TampilPelanggan extends AppCompatActivity {
     String idPelanggan;
     List<dataPelanggan> itemList = new ArrayList<dataPelanggan>();
     TextView namaPelanggan, alamat, noHP, tanggalPasang, kodeMeter, golongan;
+    int pegawai_id;
+    String namaPegawai, golongan_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class TampilPelanggan extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         idPelanggan = extras.getString("idPelanggan");
+        pegawai_id = extras.getInt("pegawai_id");
+        namaPegawai = extras.getString("namaPegawai");
 
         adapterPelanggan = new adapterPelanggan(TampilPelanggan.this, itemList);
         namaPelanggan = (TextView) findViewById(R.id.txtNamaPelanggan);
@@ -65,6 +69,9 @@ public class TampilPelanggan extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), Input.class);
                 intent.putExtra("idPelanggan", idPelanggan);
+                intent.putExtra("pegawai_id", pegawai_id);
+                intent.putExtra("namaPegawai", namaPegawai);
+                intent.putExtra("idGolongan", golongan_id);
                 startActivity(intent);
             }
         });
@@ -86,7 +93,7 @@ public class TampilPelanggan extends AppCompatActivity {
                     tanggalPasang.setText(obj.getString("tanggalPasang"));
                     kodeMeter.setText(obj.getString("kodeMeter"));
                     golongan.setText(obj.getString("namaGolongan"));
-                    new Intent().putExtra("idGolongan", obj.getString("golongan_id"));
+                    golongan_id = obj.getString("golongan_id");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

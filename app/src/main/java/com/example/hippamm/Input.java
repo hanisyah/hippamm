@@ -24,15 +24,19 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.hippamm.mysql.AppController;
 import com.example.hippamm.mysql.Server;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,15 +59,72 @@ public class Input extends AppCompatActivity {
     private TextView tvDateResult;
     File imgFile;
     Button btnKirim;
-    TextView txtTahun, txtBulan, txtTanggalCatat, txtJumlahMeter;
-    String idPelanggan, idGolongan;
+    EditText txtTahun, txtBulan, txtTanggalCatat, txtJumlahMeter, txtPegawai;
+    String idPelanggan, idGolongan, namaPegawai;
+    int pegawai_id;
 
     //Request Code Digunakan Untuk Menentukan Permintaan dari User
     public static final int REQUEST_CODE_CAMERA = 001;
     public static final int REQUEST_CODE_GALLERY = 002;
     public static final String TAG = AppController.class.getSimpleName();
-    private static String url     = Server.URL + "tagihan";
+    private String url = Server.URL + "tagihan/";
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_input);
+
+        Bundle extras = getIntent().getExtras();
+        idPelanggan = extras.getString("idPelanggan");
+        idGolongan = extras.getString("idGolongan");
+        pegawai_id = extras.getInt("pegawai_id");
+        namaPegawai = extras.getString("namaPegawai");
+
+        setImage = findViewById(R.id.showImg);
+        OpenImage = findViewById(R.id.btnKamera);
+        btnKirim = findViewById(R.id.btnSend);
+        txtTahun = findViewById(R.id.txtTahun);
+        txtBulan = findViewById(R.id.txtBulan);
+        txtTanggalCatat = findViewById(R.id.txtTanggalCatat);
+        txtJumlahMeter = findViewById(R.id.txtJumlahMeter);
+        txtPegawai = findViewById(R.id.txtPegawai);
+
+        txtPegawai.setText(namaPegawai);
+
+        btnKirim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addToMysql();
+            }
+        });
+
+        OpenImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setRequestImage();
+            }
+        });
+
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        tvDateResult = (TextView) findViewById(R.id.txtTanggalCatat);
+        btDatePicker = (EditText) findViewById(R.id.txtTanggalCatat);
+        btDatePicker.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                showDateDialog();
+                return false;
+            }
+        });
+
+        setImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogImage();
+            }
+        });
+    }
+
+    //show date picker
     private void showDateDialog(){
         Calendar newCalendar = Calendar.getInstance();
         datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
@@ -82,60 +143,7 @@ public class Input extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_input);
-
-        Bundle extras = getIntent().getExtras();
-        idPelanggan = extras.getString("idPelanggan");
-        idGolongan = extras.getString("idGolongan");
-
-        setImage = findViewById(R.id.showImg);
-        OpenImage = findViewById(R.id.btnKamera);
-        btnKirim = findViewById(R.id.btnSend);
-        txtTahun = findViewById(R.id.txtTahun);
-        txtBulan = findViewById(R.id.txtBulan);
-        txtTanggalCatat = findViewById(R.id.txtTanggalCatat);
-        txtJumlahMeter = findViewById(R.id.txtJumlahMeter);
-
-        btnKirim.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-        // inisialisasi
-        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        tvDateResult = (TextView) findViewById(R.id.txtTanggalCatat);
-        btDatePicker = (EditText) findViewById(R.id.txtTanggalCatat);
-
-        OpenImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setRequestImage();
-            }
-        });
-
-        dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
-        tvDateResult = (TextView) findViewById(R.id.txtTanggalCatat);
-        btDatePicker = (EditText) findViewById(R.id.txtTanggalCatat);
-        btDatePicker.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                showDateDialog();
-                return false;
-            }
-        });
-
-        setImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialogImage();
-            }
-        });
-    }
+    //create
     void addToMysql(){
         StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
@@ -164,25 +172,31 @@ public class Input extends AppCompatActivity {
             }
         }) {
             @Override
-            protected Map<String, String> getParams() {
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json; charset=utf-8");
+                return headers;
+            }
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
                 // Posting parameters ke post url
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("idPelanggan", idPelanggan);
-                //params.put("idPegawai", idPegawai');
+                params.put("idPegawai", Integer.toString(pegawai_id));
                 params.put("idGolongan", idGolongan);
                 params.put("tahun", txtTahun.getText().toString());
                 params.put("bulan", txtBulan.getText().toString());
                 params.put("tanggalCatat", txtTanggalCatat.getText().toString());
                 params.put("jumlahMeter", txtJumlahMeter.getText().toString());
-                //params.put("fotoMeteran", fotoMeteran);
+                params.put("fotoMeteran", "fotoMeteran");
                 return params;
             }
 
         };
-
         AppController.getInstance().addToRequestQueue(strReq, "json_obj_req");
     }
 
+    //menampilkan gambar
     void showDialogImage(){
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_image);
@@ -194,9 +208,18 @@ public class Input extends AppCompatActivity {
         Uri uri = Uri.fromFile(imgFile);
         imgView.setImageURI(uri);
 
+        Button cancelButton = (Button) dialog.findViewById(R.id.btnCancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
         dialog.show();
     }
-    //Method Ini Digunakan Untuk Membuka Image dari Galeri atau Kamera
+
+    //Membuka Image dari Galeri atau Kamera
     private void setRequestImage(){
         CharSequence[] item = {"Kamera", "Galeri"};
         AlertDialog.Builder request = new AlertDialog.Builder(this)

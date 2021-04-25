@@ -7,22 +7,6 @@
     tools:context=".TampilPelanggan"
     android:background="@drawable/bg_data">
 
-
-    <Button
-        android:id="@+id/btnInput"
-        android:layout_width="291dp"
-        android:layout_height="31dp"
-        android:background="@drawable/button"
-        android:text="Input Meter Air"
-        android:textColor="@color/biruku"
-        app:backgroundTint="#FFFFFF"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.718"
-        tools:ignore="MissingConstraints" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -33,11 +17,24 @@
         android:textSize="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.545"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.055"
+        app:layout_constraintVertical_bias="0.067"
         tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nama Pelanggan"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.138"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.280" />
 
     <TextView
         android:id="@+id/txtNamaPelanggan"
@@ -58,17 +55,17 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/textViewAlamat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Nama Pelanggan"
+        android:text="Alamat"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.138"
+        app:layout_constraintHorizontal_bias="0.114"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.280" />
+        app:layout_constraintVertical_bias="0.3457" />
 
     <TextView
         android:id="@+id/txtAlamat"
@@ -89,17 +86,17 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/textViewAlamat"
+        android:id="@+id/textViewNoHP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Alamat"
+        android:text="No HP"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.114"
+        app:layout_constraintHorizontal_bias="0.113"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3457" />
+        app:layout_constraintVertical_bias="0.410" />
 
     <TextView
         android:id="@+id/txtNoHP"
@@ -120,17 +117,17 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/textViewNoHP"
+        android:id="@+id/textTanggalPasang"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No HP"
+        android:text="Tanggal Pasang"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.113"
+        app:layout_constraintHorizontal_bias="0.135"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.410" />
+        app:layout_constraintVertical_bias="0.48" />
 
     <TextView
         android:id="@+id/txtTanggalPasang"
@@ -151,17 +148,17 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/textTanggalPasang"
+        android:id="@+id/textKodeMeter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tanggal Pasang"
+        android:text="Kode Meter"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.135"
+        app:layout_constraintHorizontal_bias="0.124"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.48" />
+        app:layout_constraintVertical_bias="0.547" />
 
     <TextView
         android:id="@+id/txtKodeMeter"
@@ -180,19 +177,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.547"
         tools:ignore="MissingConstraints" />
-
-    <TextView
-        android:id="@+id/textKodeMeter"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Kode Meter"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.124"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.547" />
 
     <TextView
         android:id="@+id/textGolongan"
@@ -224,4 +208,23 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.603"
         tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/btnInput"
+        android:layout_width="340dp"
+        android:layout_height="51dp"
+        android:background="@drawable/button"
+        android:text="Input Meter Air"
+        android:textAllCaps="false"
+        android:textColor="@color/biruku"
+        android:textSize="20sp"
+        app:backgroundTint="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.752"
+        tools:ignore="MissingConstraints" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

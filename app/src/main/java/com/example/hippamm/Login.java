@@ -76,11 +76,12 @@ public class Login extends AppCompatActivity {
                 try {
                     JSONObject jObj = new JSONObject(response);
                     success = jObj.getInt(TAG_SUCCESS);
-
                     if (success == 1) {
                         Log.e("Successfully Login!", jObj.toString());
                         Toast.makeText(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(Login.this, Home.class);
+                        intent.putExtra("pegawai_id", jObj.getInt("pegawai_id"));
+                        intent.putExtra("namaPegawai", jObj.getString("namaPegawai"));
                         finish();
                         startActivity(intent);
                     } else {

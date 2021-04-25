@@ -4,11 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class Home extends AppCompatActivity {
+
+    int pegawai_id;
+    String namaPegawai;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,17 +24,27 @@ public class Home extends AppCompatActivity {
         ImageView imageLihat = findViewById(R.id.imgLihat);
         TextView textLihat = findViewById(R.id.txtLihat);
 
+        Bundle extras = getIntent().getExtras();
+        pegawai_id = extras.getInt("pegawai_id");
+        namaPegawai = extras.getString("namaPegawai");
+
         imageInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), Scan.class));
+                Intent intent = new Intent(getBaseContext(), Scan.class);
+                intent.putExtra("pegawai_id", pegawai_id);
+                intent.putExtra("namaPegawai", namaPegawai);
+                startActivity(intent);
             }
         });
 
         textInput.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getBaseContext(), Scan.class));
+                Intent intent = new Intent(getBaseContext(), Scan.class);
+                intent.putExtra("pegawai_id", pegawai_id);
+                intent.putExtra("namaPegawai", namaPegawai);
+                startActivity(intent);
             }
         });
     }

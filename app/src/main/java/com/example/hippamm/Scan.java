@@ -17,6 +17,8 @@ import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class Scan extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
+    int pegawai_id;
+    String namaPegawai;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,10 @@ public class Scan extends AppCompatActivity implements ZXingScannerView.ResultHa
 
         mScannerView = new ZXingScannerView(this);
         setContentView(mScannerView);
+
+        Bundle extras = getIntent().getExtras();
+        pegawai_id = extras.getInt("pegawai_id");
+        namaPegawai = extras.getString("namaPegawai");
     }
     @Override
     public void onResume() {
@@ -52,6 +58,8 @@ public class Scan extends AppCompatActivity implements ZXingScannerView.ResultHa
 
         Intent intent = new Intent(getBaseContext(), TampilPelanggan.class);
         intent.putExtra("idPelanggan", rawResult.getText());
+        intent.putExtra("pegawai_id", pegawai_id);
+        intent.putExtra("namaPegawai", namaPegawai);
         startActivity(intent);
         mScannerView.resumeCameraPreview(this);
         finish();
