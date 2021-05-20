@@ -73,6 +73,7 @@ public class TampilPelanggan extends AppCompatActivity {
                 intent.putExtra("namaPegawai", namaPegawai);
                 intent.putExtra("idGolongan", golongan_id);
                 startActivity(intent);
+                finish();
             }
         });
     }
@@ -111,7 +112,6 @@ public class TampilPelanggan extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("idPelanggan", idPelanggan);
-
                 return params;
             }
         };

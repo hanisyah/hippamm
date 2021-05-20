@@ -8,7 +8,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -25,8 +26,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -34,13 +36,16 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.hippamm.mysql.AppController;
+import com.example.hippamm.mysql.DataPart;
 import com.example.hippamm.mysql.Server;
+import com.example.hippamm.mysql.VolleyMultipartRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -62,12 +67,14 @@ public class Input extends AppCompatActivity {
     EditText txtTahun, txtBulan, txtTanggalCatat, txtJumlahMeter, txtPegawai;
     String idPelanggan, idGolongan, namaPegawai;
     int pegawai_id;
+    Bitmap bmp;
 
     //Request Code Digunakan Untuk Menentukan Permintaan dari User
     public static final int REQUEST_CODE_CAMERA = 001;
     public static final int REQUEST_CODE_GALLERY = 002;
     public static final String TAG = AppController.class.getSimpleName();
-    private String url = Server.URL + "tagihan/";
+    private String url = Server.URL + "tagihan";
+    private String url_upload = Server.URL + "uploadImage";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +101,9 @@ public class Input extends AppCompatActivity {
         btnKirim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addToMysql();
+                String filename = String.valueOf(System.currentTimeMillis()) + ".png";
+                addToMysql(filename);
+                uploadBitmap(filename);
             }
         });
 
@@ -144,7 +153,7 @@ public class Input extends AppCompatActivity {
     }
 
     //create
-    void addToMysql(){
+    void addToMysql(String imgName){
         StringRequest strReq = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -155,9 +164,14 @@ public class Input extends AppCompatActivity {
                     // Cek error node pada json
                     if (success == 1) {
                         Log.d("Add/update", jObj.toString());
-                        Toast.makeText(Input.this, jObj.getString("Data berhasil di simpan!"), Toast.LENGTH_LONG).show();
+                        Toast.makeText(Input.this, "Data berhasil di simpan!", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getBaseContext(), Home.class);
+                        intent.putExtra("pegawai_id", pegawai_id);
+                        intent.putExtra("namaPegawai", namaPegawai);
+                        startActivity(intent);
+                        finish();
                     } else {
-                        Toast.makeText(Input.this, jObj.getString("Data tidak berhasil di simpan!"), Toast.LENGTH_LONG).show();
+                        Toast.makeText(Input.this, "Data tidak berhasil di simpan!", Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     // JSON error
@@ -173,8 +187,9 @@ public class Input extends AppCompatActivity {
         }) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json; charset=utf-8");
+                Map<String, String>  headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                headers.put("Accept", "application/json");
                 return headers;
             }
             @Override
@@ -188,10 +203,9 @@ public class Input extends AppCompatActivity {
                 params.put("bulan", txtBulan.getText().toString());
                 params.put("tanggalCatat", txtTanggalCatat.getText().toString());
                 params.put("jumlahMeter", txtJumlahMeter.getText().toString());
-                params.put("fotoMeteran", "fotoMeteran");
+                params.put("fotoMeteran", imgName);
                 return params;
             }
-
         };
         AppController.getInstance().addToRequestQueue(strReq, "json_obj_req");
     }
@@ -266,6 +280,7 @@ public class Input extends AppCompatActivity {
                                 .centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(setImage);
+                        bmp = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                         break;
 
                     case REQUEST_CODE_GALLERY:
@@ -274,6 +289,7 @@ public class Input extends AppCompatActivity {
                                 .centerCrop()
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(setImage);
+                        bmp = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
                         break;
                 }
             }
@@ -285,4 +301,40 @@ public class Input extends AppCompatActivity {
         });
     }
 
+    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
+    }
+
+    private void uploadBitmap(String imgName) {
+        VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, url_upload,
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        try {
+                            JSONObject obj = new JSONObject(new String(response.data));
+                            Toast.makeText(getApplicationContext(), "Sukses upload!", Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                BitmapDrawable drawable = (BitmapDrawable) setImage.getDrawable();
+                params.put("fotoMeteran", new DataPart(imgName , getFileDataFromDrawable(drawable.getBitmap())));
+                return params;
+            }
+        };
+
+        Volley.newRequestQueue(this).add(volleyMultipartRequest);
+    }
 }

@@ -35,6 +35,7 @@ public class Home extends AppCompatActivity {
                 intent.putExtra("pegawai_id", pegawai_id);
                 intent.putExtra("namaPegawai", namaPegawai);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -45,6 +46,7 @@ public class Home extends AppCompatActivity {
                 intent.putExtra("pegawai_id", pegawai_id);
                 intent.putExtra("namaPegawai", namaPegawai);
                 startActivity(intent);
+                finish();
             }
         });
     }
