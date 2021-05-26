@@ -63,7 +63,7 @@ public class Splash extends AppCompatActivity implements PermissionCallback, Err
 
     @Override
     public void onPermissionsGranted(int requestCode) {
-        Toast.makeText(this, "Permissions Received.", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "Permissions Received.", Toast.LENGTH_LONG).show();
         Thread thread = new Thread() {
             public void run() {
                 try {

@@ -31,7 +31,7 @@ import java.util.Map;
 
 public class TampilPelanggan extends AppCompatActivity {
 
-    private String url = Server.URL + "pelanggan";
+    private String url = Server.URL + "api/pelanggan";
     private static final String TAG = TampilPelanggan.class.getSimpleName();
     String tag_json_obj = "json_obj_req";
 

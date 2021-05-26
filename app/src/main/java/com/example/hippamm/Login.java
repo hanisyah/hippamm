@@ -30,7 +30,7 @@ public class Login extends AppCompatActivity {
     String username, password;
 
     int success;
-    private String url = Server.URL + "login";
+    private String url = Server.URL + "api/login";
     private static final String TAG = Login.class.getSimpleName();
 
     private static final String TAG_SUCCESS = "success";
@@ -77,7 +77,6 @@ public class Login extends AppCompatActivity {
                     JSONObject jObj = new JSONObject(response);
                     success = jObj.getInt(TAG_SUCCESS);
                     if (success == 1) {
-                        Log.e("Successfully Login!", jObj.toString());
                         Toast.makeText(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(Login.this, Home.class);
                         intent.putExtra("pegawai_id", jObj.getInt("pegawai_id"));
@@ -96,7 +95,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e(TAG, "Login Error: " + error.getMessage());
-                Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         }) {
 
@@ -106,7 +105,6 @@ public class Login extends AppCompatActivity {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("username", username);
                 params.put("password", password);
-
                 return params;
             }
         };

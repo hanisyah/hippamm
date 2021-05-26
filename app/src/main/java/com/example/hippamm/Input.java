@@ -48,6 +48,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -65,16 +66,17 @@ public class Input extends AppCompatActivity {
     File imgFile;
     Button btnKirim;
     EditText txtTahun, txtBulan, txtTanggalCatat, txtJumlahMeter, txtPegawai;
-    String idPelanggan, idGolongan, namaPegawai;
-    int pegawai_id;
+    String idPelanggan, idGolongan, namaPegawai, tahun, bulan, tanggalCatat, jumlahMeter, fotoMeter;
+    int pegawai_id, idTagihan;
     Bitmap bmp;
 
     //Request Code Digunakan Untuk Menentukan Permintaan dari User
     public static final int REQUEST_CODE_CAMERA = 001;
     public static final int REQUEST_CODE_GALLERY = 002;
     public static final String TAG = AppController.class.getSimpleName();
-    private String url = Server.URL + "tagihan";
-    private String url_upload = Server.URL + "uploadImage";
+    private String url = Server.URL + "api/tagihan";
+    private String url_edit = Server.URL + "api/edittagihan";
+    private String url_upload = Server.URL + "api/uploadImage";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,12 +100,36 @@ public class Input extends AppCompatActivity {
 
         txtPegawai.setText(namaPegawai);
 
+        if(extras.getString("status") != null){
+            tahun = extras.getString("tahun");
+            bulan = extras.getString("bulan");
+            tanggalCatat = extras.getString("tanggal");
+            jumlahMeter = extras.getString("jumlahMeter");
+            idTagihan = Integer.parseInt(extras.getString("idTagihan"));
+            fotoMeter = extras.getString("fotoMeter");
+
+            txtTahun.setText(tahun);
+            txtBulan.setText(bulan);
+            //txtTanggalCatat.setText(tanggalCatat);
+            txtJumlahMeter.setText(jumlahMeter);
+            Glide.with(getApplicationContext())
+                    .load(Server.URL + "img/" + fotoMeter)
+                    .centerCrop()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(setImage);
+        }
+
         btnKirim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String filename = String.valueOf(System.currentTimeMillis()) + ".png";
-                addToMysql(filename);
-                uploadBitmap(filename);
+                if(getIntent().getExtras().getString("status") != null){
+                    editMysql(filename);
+                    uploadBitmap(filename);
+                }else{
+                    addToMysql(filename);
+                    uploadBitmap(filename);
+                }
             }
         });
 
@@ -113,17 +139,20 @@ public class Input extends AppCompatActivity {
                 setRequestImage();
             }
         });
-
-        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        tvDateResult = (TextView) findViewById(R.id.txtTanggalCatat);
         btDatePicker = (EditText) findViewById(R.id.txtTanggalCatat);
-        btDatePicker.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                showDateDialog();
-                return false;
-            }
-        });
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        btDatePicker.setText(date);
+
+//        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+//        tvDateResult = (TextView) findViewById(R.id.txtTanggalCatat);
+//        btDatePicker = (EditText) findViewById(R.id.txtTanggalCatat);
+//        btDatePicker.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                showDateDialog();
+//                return false;
+//            }
+//        });
 
         setImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +179,64 @@ public class Input extends AppCompatActivity {
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
         datePickerDialog.show();
+    }
+
+    void editMysql(String imgName){
+        StringRequest strReq = new StringRequest(Request.Method.POST, url_edit, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d(TAG, "Response: " + response.toString());
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int success = jObj.getInt("success");
+                    // Cek error node pada json
+                    if (success == 1) {
+                        Log.d("Add/update", jObj.toString());
+                        Toast.makeText(Input.this, "Data berhasil di perbarui!", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(getBaseContext(), Home.class);
+                        intent.putExtra("pegawai_id", pegawai_id);
+                        intent.putExtra("namaPegawai", namaPegawai);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(Input.this, "Data tidak berhasil di perbarui!", Toast.LENGTH_LONG).show();
+                    }
+                } catch (JSONException e) {
+                    // JSON error
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "Error: " + error.getMessage());
+                Toast.makeText(Input.this, error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String>  headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/x-www-form-urlencoded");
+                headers.put("Accept", "application/json");
+                return headers;
+            }
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                // Posting parameters ke post url
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("idTagihan", String.valueOf(idTagihan));
+                params.put("idPelanggan", idPelanggan);
+                params.put("idPegawai", Integer.toString(pegawai_id));
+                params.put("idGolongan", idGolongan);
+                params.put("tahun", txtTahun.getText().toString());
+                params.put("bulan", txtBulan.getText().toString());
+                params.put("tanggalCatat", txtTanggalCatat.getText().toString());
+                params.put("jumlahMeter", txtJumlahMeter.getText().toString());
+                params.put("fotoMeteran", imgName);
+                return params;
+            }
+        };
+        AppController.getInstance().addToRequestQueue(strReq, "json_obj_req");
     }
 
     //create

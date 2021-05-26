@@ -49,5 +49,26 @@ public class Home extends AppCompatActivity {
                 finish();
             }
         });
+
+        imageLihat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), TampilTagihan.class);
+                intent.putExtra("pegawai_id", pegawai_id);
+                intent.putExtra("namaPegawai", namaPegawai);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        textLihat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), TampilTagihan.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 }
