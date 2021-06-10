@@ -98,6 +98,9 @@ public class Input extends AppCompatActivity {
         txtJumlahMeter = findViewById(R.id.txtJumlahMeter);
         txtPegawai = findViewById(R.id.txtPegawai);
 
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy");
+        txtTahun.setText(dt.format(new Date()));
+
         txtPegawai.setText(namaPegawai);
 
         if(extras.getString("status") != null){

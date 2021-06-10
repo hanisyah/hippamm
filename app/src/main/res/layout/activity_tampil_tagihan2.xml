@@ -141,15 +141,6 @@
         android:textStyle="bold"
         android:visibility="gone"/>
 
-        <Button
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:id="@+id/button"
-            android:layout_width="73dp"
-            android:layout_height="38dp"
-            android:text="Edit"
-            android:textAllCaps="false" />
-
     <ImageView
         android:focusable="false"
         android:focusableInTouchMode="false"

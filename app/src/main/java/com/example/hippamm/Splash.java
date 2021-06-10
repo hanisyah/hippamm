@@ -36,28 +36,28 @@ public class Splash extends AppCompatActivity implements PermissionCallback, Err
     @Override
     public void onShowSettings(final PermissionInterface permissionInterface, int requestCode) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("We need permissions for this app. Open setting screen?");
+        builder.setMessage("Kami membutuhkan izin untuk aplikasi ini. Buka layar pengaturan?");
         builder.setPositiveButton("oke", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 permissionInterface.onSettingsShown();
             }
         });
-        builder.setNegativeButton("cancel", null);
+        builder.setNegativeButton("batal", null);
         builder.show();
     }
 
     @Override
     public void onShowRationalDialog(final PermissionInterface permissionInterface, int requestCode) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("We need permissions for this app.");
+        builder.setMessage("Izin dibutuhkan untuk aplikasi ini.");
         builder.setPositiveButton("oke", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 permissionInterface.onDialogShown();
             }
         });
-        builder.setNegativeButton("cancel", null);
+        builder.setNegativeButton("batal", null);
         builder.show();
     }
 
@@ -82,7 +82,7 @@ public class Splash extends AppCompatActivity implements PermissionCallback, Err
 
     @Override
     public void onPermissionsDenied(int requestCode) {
-        Toast.makeText(this, "Permissions Denied.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Izin Ditolak.", Toast.LENGTH_LONG).show();
         reqPermission();
     }
 }
