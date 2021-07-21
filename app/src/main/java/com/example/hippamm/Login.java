@@ -28,6 +28,7 @@ public class Login extends AppCompatActivity {
     Button buttonLogin;
     EditText txtUsername, txtPassword;
     String username, password;
+    SessionManager sessionManager;
 
     int success;
     private String url = Server.URL + "api/login";
@@ -77,12 +78,18 @@ public class Login extends AppCompatActivity {
                     JSONObject jObj = new JSONObject(response);
                     success = jObj.getInt(TAG_SUCCESS);
                     if (success == 1) {
+                        sessionManager = new SessionManager(Login.this);
+
+                        int id = jObj.getInt("pegawai_id");
+                        String nama = jObj.getString("namaPegawai");
+
                         Toast.makeText(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(Login.this, Home.class);
-                        intent.putExtra("pegawai_id", jObj.getInt("pegawai_id"));
-                        intent.putExtra("namaPegawai", jObj.getString("namaPegawai"));
-                        finish();
+                        intent.putExtra("pegawai_id",id);
+                        intent.putExtra("namaPegawai", nama );
+                        //finish();
                         startActivity(intent);
+                        sessionManager.createLoginSession(String.valueOf(id),nama);
                     } else {
                         Toast.makeText(getApplicationContext(), jObj.getString(TAG_MESSAGE), Toast.LENGTH_LONG).show();
                     }
@@ -103,7 +110,7 @@ public class Login extends AppCompatActivity {
             protected Map<String, String> getParams() {
                 // Posting parameters to login url
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("username", username);
+                params.put("kodePegawai", username);
                 params.put("password", password);
                 return params;
             }

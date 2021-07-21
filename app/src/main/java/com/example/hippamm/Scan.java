@@ -62,7 +62,7 @@ public class Scan extends AppCompatActivity implements ZXingScannerView.ResultHa
         intent.putExtra("namaPegawai", namaPegawai);
         startActivity(intent);
         mScannerView.resumeCameraPreview(this);
-        finish();
+        //finish();
     }
 
 }

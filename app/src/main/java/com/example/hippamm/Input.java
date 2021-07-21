@@ -35,6 +35,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.hippamm.mysql.AppController;
 import com.example.hippamm.mysql.DataPart;
 import com.example.hippamm.mysql.Server;
@@ -69,6 +70,8 @@ public class Input extends AppCompatActivity {
     String idPelanggan, idGolongan, namaPegawai, tahun, bulan, tanggalCatat, jumlahMeter, fotoMeter;
     int pegawai_id, idTagihan;
     Bitmap bmp;
+    Bundle extras;
+    String[] bulanIndo = {"Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"};
 
     //Request Code Digunakan Untuk Menentukan Permintaan dari User
     public static final int REQUEST_CODE_CAMERA = 001;
@@ -83,7 +86,7 @@ public class Input extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_input);
 
-        Bundle extras = getIntent().getExtras();
+        extras = getIntent().getExtras();
         idPelanggan = extras.getString("idPelanggan");
         idGolongan = extras.getString("idGolongan");
         pegawai_id = extras.getInt("pegawai_id");
@@ -98,8 +101,10 @@ public class Input extends AppCompatActivity {
         txtJumlahMeter = findViewById(R.id.txtJumlahMeter);
         txtPegawai = findViewById(R.id.txtPegawai);
 
-        SimpleDateFormat dt = new SimpleDateFormat("yyyy");
-        txtTahun.setText(dt.format(new Date()));
+        SimpleDateFormat dateyear = new SimpleDateFormat("yyyy");
+        txtTahun.setText(dateyear.format(new Date()));
+        SimpleDateFormat datemonth = new SimpleDateFormat("MM");
+        txtBulan.setText(bulanIndo[Integer.parseInt(datemonth.format(new Date()))-2]);
 
         txtPegawai.setText(namaPegawai);
 
@@ -125,6 +130,7 @@ public class Input extends AppCompatActivity {
         btnKirim.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                validasiData();
                 String filename = String.valueOf(System.currentTimeMillis()) + ".png";
                 if(getIntent().getExtras().getString("status") != null){
                     editMysql(filename);
@@ -165,6 +171,20 @@ public class Input extends AppCompatActivity {
         });
     }
 
+    public void validasiData(){
+        String edittahun = txtTahun.getText().toString();
+        String editbulan = txtBulan.getText().toString();
+        String edittglcatat = txtTanggalCatat.getText().toString();
+        String editjumlahmeter = txtJumlahMeter.getText().toString();
+//        String editgambar = setImage.getDrawable().toString();
+
+        if (edittahun.matches("")|| editbulan.matches("") ||
+            edittglcatat.matches("")|| editjumlahmeter.matches("")) {
+            Toast.makeText(Input.this, "Kolom tidak boleh kosong.", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
     //show date picker
     private void showDateDialog(){
         Calendar newCalendar = Calendar.getInstance();
@@ -200,7 +220,8 @@ public class Input extends AppCompatActivity {
                         intent.putExtra("pegawai_id", pegawai_id);
                         intent.putExtra("namaPegawai", namaPegawai);
                         startActivity(intent);
-                        finish();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        //finish();
                     } else {
                         Toast.makeText(Input.this, "Data tidak berhasil di perbarui!", Toast.LENGTH_LONG).show();
                     }
@@ -261,7 +282,7 @@ public class Input extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else {
-                        Toast.makeText(Input.this, "Data tidak berhasil di simpan!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Input.this, jObj.getString("message"), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     // JSON error
@@ -309,8 +330,16 @@ public class Input extends AppCompatActivity {
         window.setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
         //Button dialogButton = (Button) dialog.findViewById(R.id.ok);
         ImageView imgView = (ImageView) dialog.findViewById(R.id.imageView);
-        Uri uri = Uri.fromFile(imgFile);
-        imgView.setImageURI(uri);
+
+        if(extras.getString("status") != null) {
+            Glide.with(getApplicationContext())
+                    .load(Server.URL + "img/" + fotoMeter)
+                    .fitCenter()
+                    .into(imgView);
+        }else{
+            Uri uri = Uri.fromFile(imgFile);
+            imgView.setImageURI(uri);
+        }
 
         Button cancelButton = (Button) dialog.findViewById(R.id.btnCancel);
         cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -327,7 +356,7 @@ public class Input extends AppCompatActivity {
     private void setRequestImage(){
         CharSequence[] item = {"Kamera", "Galeri"};
         AlertDialog.Builder request = new AlertDialog.Builder(this)
-                .setTitle("Add Image")
+                .setTitle("")
                 .setItems(item, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -393,7 +422,7 @@ public class Input extends AppCompatActivity {
 
     public byte[] getFileDataFromDrawable(Bitmap bitmap) {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 90, byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 
@@ -420,6 +449,8 @@ public class Input extends AppCompatActivity {
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 BitmapDrawable drawable = (BitmapDrawable) setImage.getDrawable();
+                //Bitmap bitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                //Bitmap.createScaledBitmap(bitmap, 768, 1280, false))
                 params.put("fotoMeteran", new DataPart(imgName , getFileDataFromDrawable(drawable.getBitmap())));
                 return params;
             }

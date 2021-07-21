@@ -1,5 +1,11 @@
 package com.example.hippamm.mysql;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class dataPelanggan {
     private int idPelanggan;
     private String namaPelanggan, alamat, noHP, tanggalPasang, kodeMeter, idGolongan, namaGolongan;
@@ -50,7 +56,10 @@ public class dataPelanggan {
         this.noHP = noHP;
     }
 
-    public String getTanggalPasang() {
+    public String getTanggalPasang(){
+//        DateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
+//        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+//        String tglBaru=dateFormat.format(df.parse(tanggalPasang));
         return tanggalPasang;
     }
 

@@ -16,6 +16,7 @@ import com.example.hippamm.Input;
 import com.example.hippamm.R;
 import com.example.hippamm.TampilTagihan;
 
+import java.text.ParseException;
 import java.util.List;
 
 public class adapterTagihan extends BaseAdapter {
@@ -72,7 +73,11 @@ public class adapterTagihan extends BaseAdapter {
         bulan.setText(dataTagihan.getBulan());
         namaPelanggan.setText(dataTagihan.getNamaPelanggan());
         namaGolongan.setText(dataTagihan.getNamaGolongan());
-        tanggalCatat.setText(dataTagihan.getTanggalCatat());
+        try {
+            tanggalCatat.setText(dataTagihan.getTanggalCatat());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         jumlahMeter.setText(dataTagihan.getJumlahMeter());
         //fotoMeteran.setText(dataTagihan.getFotoMeteran());
         namaPegawai.setText(dataTagihan.getNamaPegawai());

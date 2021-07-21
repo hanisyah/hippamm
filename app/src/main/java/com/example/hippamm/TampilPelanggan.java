@@ -41,6 +41,7 @@ public class TampilPelanggan extends AppCompatActivity {
     TextView namaPelanggan, alamat, noHP, tanggalPasang, kodeMeter, golongan;
     int pegawai_id;
     String namaPegawai, golongan_id;
+    String[] bulanIndo = {"", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +74,7 @@ public class TampilPelanggan extends AppCompatActivity {
                 intent.putExtra("namaPegawai", namaPegawai);
                 intent.putExtra("idGolongan", golongan_id);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
     }
@@ -92,6 +93,10 @@ public class TampilPelanggan extends AppCompatActivity {
                     alamat.setText(obj.getString("alamat"));
                     noHP.setText(obj.getString("noHP"));
                     tanggalPasang.setText(obj.getString("tanggalPasang"));
+
+                    String[] tgl = obj.getString("tanggalPasang").split("-");
+                    tanggalPasang.setText( tgl[2] + " " + bulanIndo[Integer.parseInt(tgl[1])] + " " +tgl[0]);
+
                     kodeMeter.setText(obj.getString("kodeMeter"));
                     golongan.setText(obj.getString("namaGolongan"));
                     golongan_id = obj.getString("golongan_id");

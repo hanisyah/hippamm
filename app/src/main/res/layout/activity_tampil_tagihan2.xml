@@ -7,76 +7,231 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/txtKodeMeter"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:paddingLeft="5dp"
-        android:paddingTop="2dp"
-        android:text="B1231"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/txtTahun"
+        <TextView
+            android:id="@+id/textKode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:text="Kode Meter             : "
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtKodeMeter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:text="B1231"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:paddingLeft="5dp"
-        android:paddingTop="2dp"
-        android:text="2021"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textTahun"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:text="Tahun                       : "
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+
+        <TextView
+            android:id="@+id/txtTahun"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:text="2021"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textBulan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:text="Bulan                        : "
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/txtBulan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="Maret"
             android:paddingLeft="5dp"
             android:paddingTop="2dp"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"  />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textNama"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:text="Nama                        : "
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/txtNamaPelanggan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="Amir"
             android:paddingLeft="5dp"
             android:paddingTop="2dp"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"  />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textGolongan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:text="Golongan                 : "
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
         <TextView
             android:id="@+id/txtGolongan"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="Menengah Atas"
             android:paddingLeft="5dp"
             android:paddingTop="2dp"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"  />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textTgl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:text="Tanggal Catat         : "
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/txtTanggalCatat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="Selasa, 18 Mei 2021"
             android:paddingLeft="5dp"
             android:paddingTop="2dp"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"  />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textJumlah"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:text="Jumlah Meter         : "
+            android:textSize="16sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/txtJumlahMeter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:text="12345"
             android:paddingLeft="5dp"
             android:paddingTop="2dp"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold"  />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textPegawai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:text="Pegawai Pencatat  : "
+            android:textSize="16sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txtPegawaiPencatat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:text="Pegawai Adi"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 <!--        <TextView-->
 <!--            android:id="@+id/txtFotoMeter"-->
@@ -88,15 +243,6 @@
 <!--            android:textSize="14sp"-->
 <!--            android:textStyle="bold"  />-->
 
-        <TextView
-            android:id="@+id/txtPegawaiPencatat"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:paddingTop="2dp"
-            android:text="Pegawai Adi"
-            android:textSize="14sp"
-            android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtIdPelanggan"
@@ -142,12 +288,12 @@
         android:visibility="gone"/>
 
     <ImageView
+        android:id="@+id/fotoMeter"
+        android:layout_width="184dp"
+        android:layout_height="168dp"
+        android:background="@drawable/noimage"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:id="@+id/fotoMeter"
-        android:layout_width="179dp"
-        android:layout_height="184dp"
-        android:background="@drawable/immigration"
         tools:ignore="MissingConstraints" />
 
 </LinearLayout>

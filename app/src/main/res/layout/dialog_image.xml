@@ -10,8 +10,6 @@
         android:id="@+id/imageView"
         android:layout_width="332dp"
         android:layout_height="651dp"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

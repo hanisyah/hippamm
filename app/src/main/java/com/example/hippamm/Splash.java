@@ -16,11 +16,13 @@ import com.kishan.askpermission.PermissionInterface;
 
 public class Splash extends AppCompatActivity implements PermissionCallback, ErrorCallback {
     private static final int REQUEST_PERMISSIONS = 20;
+    SessionManager sessionManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        sessionManager = new SessionManager(getApplicationContext());
         reqPermission();
     }
 
@@ -71,9 +73,7 @@ public class Splash extends AppCompatActivity implements PermissionCallback, Err
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } finally {
-                    Intent intent = new Intent (Splash.this, Login.class);
-                    startActivity(intent);
-                    finish();
+                    sessionManager.checkLogin();
                 }
             }
         };

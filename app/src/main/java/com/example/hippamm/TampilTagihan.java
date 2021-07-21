@@ -29,7 +29,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TampilTagihan extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
@@ -43,6 +45,20 @@ public class TampilTagihan extends AppCompatActivity implements SwipeRefreshLayo
     private static final String TAG = TampilTagihan.class.getSimpleName();
     int pegawai_id;
     String namaPegawai;
+    String[] bulanIndo = {"Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"};
+//    String[] urutBulan = new String[12];
+//    urutBulan["Januari"] = 1;
+//    urutBulan['Februari'] = 2;
+//    urutBulan['Maret'] = 3;
+//    urutBulan['April'] = 4;
+//    urutBulan['Mei'] = 5;
+//    urutBulan['Juni'] = 6;
+//    urutBulan['Juli'] = 7;
+//    urutBulan['Agustus'] = 8;
+//    urutBulan['September'] = 9;
+//    urutBulan['Oktober'] = 10;
+//    urutBulan['November'] = 11;
+//    urutBulan['Desember'] = 12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +70,8 @@ public class TampilTagihan extends AppCompatActivity implements SwipeRefreshLayo
         Bundle extras = getIntent().getExtras();
         pegawai_id = extras.getInt("pegawai_id");
         namaPegawai = extras.getString("namaPegawai");
+
+        SimpleDateFormat datemonth = new SimpleDateFormat("MM");
 
         // untuk mengisi data dari JSON ke dalam adapter
         adapter = new adapterTagihan(TampilTagihan.this, itemList);
@@ -72,20 +90,22 @@ public class TampilTagihan extends AppCompatActivity implements SwipeRefreshLayo
                 TextView jumlah = view.findViewById(R.id.txtJumlahMeter);
                 TextView image = view.findViewById(R.id.txtImage);
 
-                Intent intent = new Intent(getBaseContext(), Input.class);
-                intent.putExtra("idTagihan", idTagihan.getText().toString());
-                intent.putExtra("idPelanggan", idPelanggan.getText().toString());
-                intent.putExtra("pegawai_id", pegawai_id);
-                intent.putExtra("namaPegawai", namaPegawai);
-                intent.putExtra("idGolongan", idGolongan.getText().toString());
-                intent.putExtra("tahun", tahun.getText().toString());
-                intent.putExtra("bulan", bulan.getText().toString());
-                intent.putExtra("tanggal", tanggal.getText().toString());
-                intent.putExtra("jumlahMeter", jumlah.getText().toString());
-                intent.putExtra("fotoMeter", image.getText().toString());
-                intent.putExtra("status", "edit");
-                startActivity(intent);
-                finish();
+                //if(datemonth.format(new Date()).equals(urutBulan[Integer.parseInt(bulan.getText().toString())]) + 1){
+                    Intent intent = new Intent(getBaseContext(), Input.class);
+                    intent.putExtra("idTagihan", idTagihan.getText().toString());
+                    intent.putExtra("idPelanggan", idPelanggan.getText().toString());
+                    intent.putExtra("pegawai_id", pegawai_id);
+                    intent.putExtra("namaPegawai", namaPegawai);
+                    intent.putExtra("idGolongan", idGolongan.getText().toString());
+                    intent.putExtra("tahun", tahun.getText().toString());
+                    intent.putExtra("bulan", bulan.getText().toString());
+                    intent.putExtra("tanggal", tanggal.getText().toString());
+                    intent.putExtra("jumlahMeter", jumlah.getText().toString());
+                    intent.putExtra("fotoMeter", image.getText().toString());
+                    intent.putExtra("status", "edit");
+                    startActivity(intent);
+                    //finish();
+                //}
             }
         });
 
@@ -160,5 +180,12 @@ public class TampilTagihan extends AppCompatActivity implements SwipeRefreshLayo
 
         // menambah request ke request queue
         AppController.getInstance().addToRequestQueue(jArr);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, Home.class);
+        startActivity(intent);
+        finish();
     }
 }
